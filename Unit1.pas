@@ -153,10 +153,10 @@ begin
 end;
 
 procedure TfGACT.GetInsertScript(MEM: TStream);
-var i, j: Integer;
+var i, j, gg: Integer;
   list: TArray<String>;
   WriteSQL: Boolean;
-  TMPString: string;
+  TMPString,HeadString: string;
   TMPHex:TBytes;//PAnsiChar;
   Buffer:TArray<Byte>;
   UTF8:TEncoding;
@@ -171,7 +171,7 @@ var i, j: Integer;
     end;
   end;
 
-begin
+begin gg:=0;
   if not Assigned(MEM) then exit;
   if not msFields.Active then exit;
   msFields.First;
@@ -186,7 +186,7 @@ begin
   msFields.First;
   if High(list) < 0 then exit;
   if not MSQuery1.Active then exit;
-  TMPString := 'insert [' + msTables.FieldByName('TableSchema').AsString + '].['
+  HeadString := 'insert [' + msTables.FieldByName('TableSchema').AsString + '].['
     + msTables.FieldByName('TableName').AsString + '] (' + SelectFields +
     ') values ' + sLineBreak;
   //Memo1.Lines.Add(TMPString); TMPString
@@ -199,7 +199,13 @@ begin
   //SetLength(Buffer,0);
   MSQuery1.First;
   while not MSQuery1.Eof do begin
-    TMPString := '(';
+    if gg <=0 then begin
+      TMPString:='(';
+      UTF8:=TEncoding.UTF8.Clone;
+      Buffer:=UTF8.GetBytes(HeadString);
+      MEM.Write(Buffer,High(Buffer)+1);
+    end else TMPString := '(';
+    Inc(gg);
     for i := 0 to MSQuery1.FieldCount - 1 do begin // dataField
       WriteSQL := False;
       for j := 0 to High(list) do begin // select field
@@ -213,15 +219,15 @@ begin
       if TMPString.Length > 1 then TMPString := TMPString + ',';
       if not MSQuery1.Fields.Fields[i].IsNull then begin
         case MSQuery1.Fields.Fields[i].DataType of
-          // Ñòðîêè
+          // Ð¡Ñ‚Ñ€Ð¾ÐºÐ¸
           ftString, ftFixedWideChar, ftFixedChar, ftWideString:
-            TMPString := TMPString + '''' + MSQuery1.Fields.Fields[i]
+            TMPString := TMPString + 'N''' + MSQuery1.Fields.Fields[i]
               .AsString.Replace('''', '''''') + '''';
-          // ×èñëà
+          // Ð§Ð¸ÑÐ»Ð°
           ftSmallint, ftInteger, ftWord, ftBytes, ftLargeint, ftLongWord,
             ftShortint, ftByte, ftExtended, ftFloat, ftCurrency, ftSingle:
             TMPString := TMPString + MSQuery1.Fields.Fields[i].AsString;
-          // ïðî÷èå
+          // Ð¿Ñ€Ð¾Ñ‡Ð¸Ðµ
           ftBoolean: begin
             if MSQuery1.Fields.Fields[i].AsBoolean then TMPString := TMPString + '1'
             else TMPString := TMPString + '0';
@@ -229,11 +235,11 @@ begin
           ftGuid:
             TMPString := TMPString + '''' + MSQuery1.Fields.Fields[i]
               .AsString.Replace('''', '''''') + '''';
-          // äàòà è âðåìÿ
+          // Ð´Ð°Ñ‚Ð° Ð¸ Ð²Ñ€ÐµÐ¼Ñ
           ftDate, ftTime, ftDateTime, ftTimeStamp:
             TMPString := TMPString + '''' + MSQuery1.Fields.Fields[i]
               .AsString.Replace('''', '''''') + '''';
-          // áèíàðíûå
+          // Ð±Ð¸Ð½Ð°Ñ€Ð½Ñ‹Ðµ
           ftVarBytes, ftBlob, ftMemo, ftGraphic, ftFmtMemo, ftTypedBinary,
             ftWideMemo: begin
               //TMPHex:=AllocMem(High(MSQuery1.Fields.Fields[i].AsBytes)*2);
@@ -251,8 +257,12 @@ begin
       end;
     end;
     MSQuery1.Next;
-    if not MSQuery1.Eof then TMPString:=TMPString+'),'+sLineBreak
-    else TMPString:=TMPString+')';
+    if not MSQuery1.Eof then begin
+      if gg >= 1000 then begin
+        TMPString:=TMPString+');'+sLineBreak;
+        gg:=0;
+      end else TMPString:=TMPString+'),'+sLineBreak;
+    end else TMPString:=TMPString+')';
     Buffer:=UTF8.GetBytes(TMPString);
     MEM.WriteData(Buffer,High(Buffer)+1);
     //SetLength(Buffer,0);
