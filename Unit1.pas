@@ -1,4 +1,4 @@
-unit Unit1;
+﻿unit Unit1;
 
 interface
 
@@ -9,7 +9,7 @@ uses
   SdacVcl, MemDS, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator,
   cxDBData, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
-  cxGridTableView, cxGridDBTableView, cxGrid, DAScript, MSScript;
+  cxGridTableView, cxGridDBTableView, cxGrid, DAScript, MSScript, dxDateRanges, dxScrollbarAnnotations;
 
 Const
   Select = 'select %s from %s ';

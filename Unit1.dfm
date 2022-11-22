@@ -165,6 +165,7 @@ object fGACT: TfGACT
         object cxGridTablesDBTableView1: TcxGridDBTableView
           OnDblClick = cxGridTablesDBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataSource = dsTables
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>
@@ -207,6 +208,7 @@ object fGACT: TfGACT
         TabOrder = 1
         object cxGridFieldsDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
+          ScrollbarAnnotations.CustomAnnotations = <>
           DataController.DataSource = dsFields
           DataController.Summary.DefaultGroupSummaryItems = <>
           DataController.Summary.FooterSummaryItems = <>

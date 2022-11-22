@@ -1,4 +1,4 @@
-program Project1;
+program MSSQL_GET;
 
 uses
   Forms,
