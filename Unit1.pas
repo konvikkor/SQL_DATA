@@ -5,11 +5,13 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, DB, Grids, DBGrids, ADODB, StdCtrls, DBCtrls, ExtCtrls, dbcgrids,
-  ComCtrls, XPMan, CheckLst, ToolWin, Clipbrd, dxmdaset, DBAccess, MSAccess,
-  SdacVcl, MemDS, cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
+  ComCtrls, XPMan, CheckLst, ToolWin, Clipbrd, dxmdaset, DBAccess, MemDS,
+  cxGraphics, cxControls, cxLookAndFeels, cxLookAndFeelPainters,
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator,
   cxDBData, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
-  cxGridTableView, cxGridDBTableView, cxGrid, DAScript, MSScript, dxDateRanges, dxScrollbarAnnotations;
+  cxGridTableView, cxGridDBTableView, cxGrid, DAScript, dxDateRanges, dxScrollbarAnnotations,
+  PostgreSQLUniProvider, UniProvider, SQLServerUniProvider, UniScript, Uni,
+  UniDacVcl, VirtualTable;
 
 Const
   Select = 'select %s from %s ';
@@ -44,11 +46,11 @@ type
     Splitter3: TSplitter;
     Label1: TLabel;
     SaveDialog1: TSaveDialog;
-    MSConnection1: TMSConnection;
-    MSConnectDialog1: TMSConnectDialog;
-    MSQuery1: TMSQuery;
+    MSConnection1: TUniConnection;
+    MSConnectDialog1: TUniConnectDialog;
+    MSQuery1: TUniQuery;
     DataSource1: TDataSource;
-    msTables: TMSQuery;
+    msTables: TUniQuery;
     cxGridTablesDBTableView1: TcxGridDBTableView;
     cxGridTablesLevel1: TcxGridLevel;
     cxGridTables: TcxGrid;
@@ -62,15 +64,8 @@ type
     cxGridFieldsDBTableView1: TcxGridDBTableView;
     cxGridFieldsLevel1: TcxGridLevel;
     cxGridFields: TcxGrid;
-    msFields: TMSQuery;
+    msFields: TUniQuery;
     dsFields: TDataSource;
-    msFieldsname: TStringField;
-    msFieldstype: TStringField;
-    msFieldsLength: TIntegerField;
-    msFieldsident: TBooleanField;
-    msFieldsnullable: TBooleanField;
-    msFieldsrow: TIntegerField;
-    msFieldssel: TBooleanField;
     cxGridFieldsDBTableView1name: TcxGridDBColumn;
     cxGridFieldsDBTableView1type: TcxGridDBColumn;
     cxGridFieldsDBTableView1Length: TcxGridDBColumn;
@@ -78,7 +73,25 @@ type
     cxGridFieldsDBTableView1nullable: TcxGridDBColumn;
     cxGridFieldsDBTableView1row: TcxGridDBColumn;
     cxGridFieldsDBTableView1sel: TcxGridDBColumn;
-    MSScript1: TMSScript;
+    MSScript1: TUniScript;
+    SQLServerUniProvider1: TSQLServerUniProvider;
+    PostgreSQLUniProvider1: TPostgreSQLUniProvider;
+    UniTransaction1: TUniTransaction;
+    msFieldsrow: TIntegerField;
+    msFieldsname: TWideStringField;
+    msFieldstype: TWideStringField;
+    msFieldsLength: TSmallintField;
+    msFieldsident: TBooleanField;
+    msFieldsnullable: TBooleanField;
+    msFieldssel: TBooleanField;
+    vtFields: TVirtualTable;
+    vtFieldsrow: TIntegerField;
+    vtFieldsname: TWideStringField;
+    vtFieldstype: TWideStringField;
+    vtFieldsLength: TSmallintField;
+    vtFieldsident: TBooleanField;
+    vtFieldsnullable: TBooleanField;
+    vtFieldssel: TBooleanField;
     procedure bRunSQLClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure bSaveToFileClick(Sender: TObject);
@@ -369,15 +382,21 @@ begin
   mSQL.Text := Format(Select, [filter, TTabName]);
 
   msFields.Close;
-  MSScript1.Params.AddParameter.Name := 'TableName';
+  if MSScript1.Params.FindParam('TableName') = nil then begin
+    MSScript1.Params.AddParameter.Name := 'TableName';
+  end;
   MSScript1.Params.ParamByName('TableName').Value := msTablesTableName.Value;
   MSScript1.Execute;
 
-  msFields.Params.ParamByName('TableName').Value := msTablesTableName.Value;
+  if msFields.Params.FindParam('TableName') <> nil then
+    msFields.Params.ParamByName('TableName').Value := msTablesTableName.Value;
 
   Application.ProcessMessages;
   bRunSQL.Click;
-  msFields.Open;
+  msFields.ExecSQL;
+  vtFields.Close;
+  vtFields.Assign(msFields);
+  vtFields.Open;
 end;
 
 end.

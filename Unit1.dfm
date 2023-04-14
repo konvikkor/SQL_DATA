@@ -10,10 +10,8 @@ object fGACT: TfGACT
   Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
-  OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object GroupBox3: TGroupBox
     Left = 0
@@ -23,6 +21,7 @@ object fGACT: TfGACT
     Align = alLeft
     Caption = 'SQL Script for View Data in TABLE'
     TabOrder = 0
+    ExplicitHeight = 406
     object Splitter1: TSplitter
       Left = 249
       Top = 15
@@ -38,6 +37,7 @@ object fGACT: TfGACT
       Align = alBottom
       BevelOuter = bvLowered
       TabOrder = 0
+      ExplicitTop = 366
       object Label1: TLabel
         Left = 331
         Top = 1
@@ -136,6 +136,7 @@ object fGACT: TfGACT
       Align = alClient
       ScrollBars = ssBoth
       TabOrder = 1
+      ExplicitHeight = 351
     end
     object GroupBox4: TGroupBox
       Left = 2
@@ -145,6 +146,7 @@ object fGACT: TfGACT
       Align = alLeft
       Caption = 'Table/Field'
       TabOrder = 2
+      ExplicitHeight = 351
       object Splitter2: TSplitter
         Left = 2
         Top = 205
@@ -162,6 +164,7 @@ object fGACT: TfGACT
         Height = 190
         Align = alClient
         TabOrder = 0
+        ExplicitHeight = 189
         object cxGridTablesDBTableView1: TcxGridDBTableView
           OnDblClick = cxGridTablesDBTableView1DblClick
           Navigator.Buttons.CustomButtons = <>
@@ -206,6 +209,7 @@ object fGACT: TfGACT
         Height = 142
         Align = alBottom
         TabOrder = 1
+        ExplicitTop = 207
         object cxGridFieldsDBTableView1: TcxGridDBTableView
           Navigator.Buttons.CustomButtons = <>
           ScrollbarAnnotations.CustomAnnotations = <>
@@ -268,6 +272,8 @@ object fGACT: TfGACT
     Align = alClient
     Caption = 'Result/VIEW'
     TabOrder = 1
+    ExplicitWidth = 326
+    ExplicitHeight = 406
     object Splitter3: TSplitter
       Left = 2
       Top = 226
@@ -301,6 +307,8 @@ object fGACT: TfGACT
       Align = alBottom
       Caption = 'Complete Script'
       TabOrder = 1
+      ExplicitTop = 228
+      ExplicitWidth = 322
       object Memo1: TMemo
         Left = 2
         Top = 15
@@ -309,6 +317,7 @@ object fGACT: TfGACT
         Align = alClient
         ScrollBars = ssBoth
         TabOrder = 0
+        ExplicitWidth = 318
       end
     end
   end
@@ -319,6 +328,8 @@ object fGACT: TfGACT
     Height = 15
     Align = alBottom
     TabOrder = 2
+    ExplicitTop = 406
+    ExplicitWidth = 911
   end
   object StatusBar1: TStatusBar
     Left = 0
@@ -332,6 +343,8 @@ object fGACT: TfGACT
       item
         Width = 50
       end>
+    ExplicitTop = 421
+    ExplicitWidth = 911
   end
   object XPManifest1: TXPManifest
     Left = 568
@@ -348,45 +361,41 @@ object fGACT: TfGACT
     Left = 568
     Top = 84
   end
-  object MSConnection1: TMSConnection
+  object MSConnection1: TUniConnection
+    ProviderName = 'SQL Server'
+    Port = 1433
     Database = 'Obraz30'
-    Authentication = auWindows
-    Options.ApplicationName = 'Get Data SQL'
-    Options.Provider = prSQL
+    SpecificOptions.Strings = (
+      'SQL Server.ApplicationName=GET_SQL')
+    Options.ConvertEOL = True
+    Options.EnableBCD = True
+    Options.EnableFMTBCD = True
+    DefaultTransaction = UniTransaction1
+    Username = 'sa'
     Server = '.'
-    AfterConnect = MSConnection1AfterConnect
+    Connected = True
     ConnectDialog = MSConnectDialog1
+    AfterConnect = MSConnection1AfterConnect
     Left = 264
     Top = 32
+    EncryptedPassword = 'DEFF9CFFCDFF8FFF8EFFCCFF91FF'
   end
-  object MSConnectDialog1: TMSConnectDialog
+  object MSConnectDialog1: TUniConnectDialog
+    DatabaseLabel = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
+    PortLabel = #1055#1086#1088#1090
+    ProviderLabel = #1055#1088#1086#1074#1072#1081#1076#1077#1088
     SavePassword = True
     Caption = #1057#1086#1077#1076#1080#1085#1077#1085#1080#1077
+    UsernameLabel = #1048#1084#1103
+    PasswordLabel = #1055#1072#1088#1086#1083#1100
+    ServerLabel = #1057#1077#1088#1074#1077#1088
     ConnectButton = #1057#1086#1077#1076#1080#1085#1080#1090#1100
     CancelButton = #1054#1090#1084#1077#1085#1072
-    Server.Caption = #1057#1077#1088#1074#1077#1088
-    Server.Visible = True
-    Server.Order = 0
-    UserName.Caption = #1048#1084#1103
-    UserName.Visible = True
-    UserName.Order = 3
-    Password.Caption = #1055#1072#1088#1086#1083#1100
-    Password.Visible = True
-    Password.Order = 4
-    Database.Caption = #1041#1072#1079#1072' '#1076#1072#1085#1085#1099#1093
-    Database.Visible = True
-    Database.Order = 5
-    Port.Caption = #1055#1086#1088#1090
-    Port.Visible = False
-    Port.Order = 1
-    Authentication.Caption = 'Authentication'
-    Authentication.Visible = True
-    Authentication.Order = 2
     LabelSet = lsRussian
     Left = 296
     Top = 32
   end
-  object MSQuery1: TMSQuery
+  object MSQuery1: TUniQuery
     Connection = MSConnection1
     SQL.Strings = (
       'select @@VERSION')
@@ -398,7 +407,7 @@ object fGACT: TfGACT
     Left = 384
     Top = 80
   end
-  object msTables: TMSQuery
+  object msTables: TUniQuery
     Connection = MSConnection1
     SQL.Strings = (
       'SELECT '
@@ -442,44 +451,10 @@ object fGACT: TfGACT
     Left = 88
     Top = 64
   end
-  object msFields: TMSQuery
-    SQLInsert.Strings = (
-      'INSERT INTO [#Fields]'
-      '  ([row], [name], [type], [Length], [ident], [nullable], [sel])'
-      'VALUES'
-      
-        '  (:[row], :[name], :[type], :[Length], :[ident], :[nullable], :' +
-        '[sel])')
-    SQLDelete.Strings = (
-      'DELETE FROM [#Fields]'
-      'WHERE'
-      '  [row] = :[Old_row]')
-    SQLUpdate.Strings = (
-      'UPDATE [#Fields]'
-      'SET'
-      
-        '  [row] = :[row], [name] = :[name], [type] = :[type], [Length] =' +
-        ' :[Length], [ident] = :[ident], [nullable] = :[nullable], [sel] ' +
-        '= :[sel]'
-      'WHERE'
-      '  [row] = :[Old_row]')
-    SQLRefresh.Strings = (
-      
-        'SELECT [row], [name], [type], [Length], [ident], [nullable], [se' +
-        'l] FROM [#Fields]'
-      'WHERE'
-      '  [row] = :[row]')
-    SQLLock.Strings = (
-      'SELECT * FROM [#Fields]'
-      'WITH (UPDLOCK, ROWLOCK, HOLDLOCK)'
-      'WHERE'
-      '  [row] = :[Old_row]')
-    SQLRecCount.Strings = (
-      'SET :PCOUNT = (SELECT COUNT(*) FROM [#Fields]'
-      ')')
+  object msFields: TUniQuery
     Connection = MSConnection1
     SQL.Strings = (
-      'declare @TableName varchar (40)'
+      '/*declare @TableName varchar (40)'
       'set @TableName = :TableName'
       ''
       
@@ -508,47 +483,61 @@ object fGACT: TfGACT
       'CLOSE cFields'
       'DEALLOCATE cFields;'
       ''
-      'select * from #Fields;')
+      'select * from #Fields;*/'
+      ''
+      
+        'select c.column_id as '#39'row'#39' ,c.name as name, TYPE_NAME(c.system_' +
+        'type_id) as type, c.max_length as Length, c.is_identity as ident' +
+        ', c.is_nullable as nullable, Cast(1 as bit) as  sel'
+      ' from sys.columns c'
+      ' join sys.objects o on c.object_id = o.object_id'
+      'where o.name = :TableName')
     IndexFieldNames = 'row'
-    Left = 288
-    Top = 184
+    Left = 352
+    Top = 192
     ParamData = <
       item
-        DataType = ftString
+        DataType = ftUnknown
         Name = 'TableName'
-        Size = 4
-        Value = 'main'
+        Value = nil
       end>
-    object msFieldsname: TStringField
+    object msFieldsrow: TIntegerField
+      FieldName = 'row'
+      Required = True
+    end
+    object msFieldsname: TWideStringField
       FieldName = 'name'
-      Size = 40
+      Size = 128
     end
-    object msFieldstype: TStringField
+    object msFieldstype: TWideStringField
       FieldName = 'type'
-      Size = 40
+      ReadOnly = True
+      Size = 128
     end
-    object msFieldsLength: TIntegerField
+    object msFieldsLength: TSmallintField
       FieldName = 'Length'
+      Required = True
     end
     object msFieldsident: TBooleanField
       FieldName = 'ident'
+      ReadOnly = True
+      Required = True
     end
     object msFieldsnullable: TBooleanField
       FieldName = 'nullable'
-    end
-    object msFieldsrow: TIntegerField
-      FieldName = 'row'
+      ReadOnly = True
     end
     object msFieldssel: TBooleanField
       FieldName = 'sel'
+      ReadOnly = True
     end
   end
   object dsFields: TDataSource
-    DataSet = msFields
+    DataSet = vtFields
     Left = 226
     Top = 191
   end
-  object MSScript1: TMSScript
+  object MSScript1: TUniScript
     SQL.Strings = (
       'IF OBJECT_ID('#39'tempdb..#Fields'#39') IS NOT NULL'
       #9'delete #Fields;'
@@ -557,10 +546,120 @@ object fGACT: TfGACT
       
         #9'Create Table #Fields (row int ,name varchar(40),type varchar(40' +
         '), Length int, ident bit, nullable bit, sel bit);'
-      '--select * from #Fields;')
+      '--select * from #Fields;'
+      'declare @TableName varchar (40)'
+      'set @TableName = :TableName'
+      ''
+      
+        'declare @row int, @name varchar(40),@type varchar(40), @Length i' +
+        'nt, @ident bit, @nullable bit'
+      'declare cFields cursor FOR'
+      
+        'select c.column_id ,c.name, TYPE_NAME(c.system_type_id) as type,' +
+        ' c.max_length, c.is_identity, c.is_nullable'
+      ' from sys.columns c'
+      ' join sys.objects o on c.object_id = o.object_id'
+      'where o.name = @TableName '
+      'open cFields'
+      
+        'FETCH NEXT FROM cFields INTO @row, @name, @type, @Length , @iden' +
+        't, @nullable'
+      'WHILE @@FETCH_STATUS = 0  '
+      'BEGIN'
+      
+        #9'insert #Fields values (@row, @name, @type, @Length , @ident, @n' +
+        'ullable, 1)'
+      
+        #9'FETCH NEXT FROM cFields INTO @row, @name, @type, @Length , @ide' +
+        'nt, @nullable'
+      'END'
+      'CLOSE cFields'
+      'DEALLOCATE cFields;')
     Connection = MSConnection1
-    UseOptimization = True
+    Transaction = UniTransaction1
     Left = 424
     Top = 168
+  end
+  object SQLServerUniProvider1: TSQLServerUniProvider
+    Left = 312
+    Top = 296
+  end
+  object PostgreSQLUniProvider1: TPostgreSQLUniProvider
+    Left = 312
+    Top = 240
+  end
+  object UniTransaction1: TUniTransaction
+    DefaultConnection = MSConnection1
+    Left = 264
+    Top = 128
+  end
+  object vtFields: TVirtualTable
+    FieldDefs = <
+      item
+        Name = 'row'
+        Attributes = [faRequired]
+        DataType = ftInteger
+      end
+      item
+        Name = 'name'
+        DataType = ftWideString
+        Size = 128
+      end
+      item
+        Name = 'type'
+        DataType = ftWideString
+        Size = 128
+      end
+      item
+        Name = 'Length'
+        Attributes = [faRequired]
+        DataType = ftSmallint
+      end
+      item
+        Name = 'ident'
+        Attributes = [faRequired]
+        DataType = ftBoolean
+      end
+      item
+        Name = 'nullable'
+        DataType = ftBoolean
+      end
+      item
+        Name = 'sel'
+        DataType = ftBoolean
+      end>
+    Left = 288
+    Top = 192
+    Data = {
+      040007000300726F77030000000000000004006E616D65180080000000000004
+      0074797065180080000000000006004C656E6774680200000000000000050069
+      64656E74050000000000000008006E756C6C61626C6505000000000000000300
+      73656C0500000000000000000000000000}
+    object vtFieldsrow: TIntegerField
+      FieldName = 'row'
+      Required = True
+    end
+    object vtFieldsname: TWideStringField
+      FieldName = 'name'
+      Size = 128
+    end
+    object vtFieldstype: TWideStringField
+      FieldName = 'type'
+      Size = 128
+    end
+    object vtFieldsLength: TSmallintField
+      FieldName = 'Length'
+      Required = True
+    end
+    object vtFieldsident: TBooleanField
+      FieldName = 'ident'
+      Required = True
+    end
+    object vtFieldsnullable: TBooleanField
+      FieldName = 'nullable'
+    end
+    object vtFieldssel: TBooleanField
+      FieldName = 'sel'
+    end
   end
 end
