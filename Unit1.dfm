@@ -57,17 +57,6 @@ object fGACT: TfGACT
         TabOrder = 0
         OnClick = bRunSQLClick
       end
-      object Button1: TButton
-        Left = 78
-        Top = 3
-        Width = 114
-        Height = 17
-        Hint = 'Clearing all tables except for isolated.'
-        Caption = 'DELETE ALLTABLES'
-        ParentShowHint = False
-        ShowHint = True
-        TabOrder = 1
-      end
       object Button3: TButton
         Left = 4
         Top = 19
@@ -77,7 +66,7 @@ object fGACT: TfGACT
         Caption = 'Delete From Row'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 2
+        TabOrder = 1
         OnClick = Button3Click
       end
       object ComboBox1: TComboBox
@@ -85,7 +74,7 @@ object fGACT: TfGACT
         Top = 15
         Width = 145
         Height = 21
-        TabOrder = 3
+        TabOrder = 2
         Text = 'Default'
         Items.Strings = (
           'Default'
@@ -100,7 +89,7 @@ object fGACT: TfGACT
         Caption = 'Create Script=>Save in File'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 4
+        TabOrder = 3
         OnClick = Button2Click
       end
       object bSaveToFile: TButton
@@ -112,7 +101,7 @@ object fGACT: TfGACT
         Caption = 'Save -=> File <=- Script'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 5
+        TabOrder = 4
         OnClick = bSaveToFileClick
       end
       object bCreate: TButton
@@ -124,7 +113,7 @@ object fGACT: TfGACT
         Caption = 'Create Insert Script'
         ParentShowHint = False
         ShowHint = True
-        TabOrder = 6
+        TabOrder = 5
         OnClick = bCreateClick
       end
     end
@@ -583,10 +572,6 @@ object fGACT: TfGACT
   object SQLServerUniProvider1: TSQLServerUniProvider
     Left = 312
     Top = 296
-  end
-  object PostgreSQLUniProvider1: TPostgreSQLUniProvider
-    Left = 312
-    Top = 240
   end
   object UniTransaction1: TUniTransaction
     DefaultConnection = MSConnection1

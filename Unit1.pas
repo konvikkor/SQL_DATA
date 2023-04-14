@@ -10,7 +10,7 @@ uses
   cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage, cxEdit, cxNavigator,
   cxDBData, cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
   cxGridTableView, cxGridDBTableView, cxGrid, DAScript, dxDateRanges, dxScrollbarAnnotations,
-  PostgreSQLUniProvider, UniProvider, SQLServerUniProvider, UniScript, Uni,
+  UniProvider, SQLServerUniProvider, UniScript, Uni,
   UniDacVcl, VirtualTable;
 
 Const
@@ -28,7 +28,6 @@ type
     Splitter1: TSplitter;
     Panel2: TPanel;
     bRunSQL: TButton;
-    Button1: TButton;
     Button3: TButton;
     mSQL: TMemo;
     GroupBox4: TGroupBox;
@@ -75,7 +74,6 @@ type
     cxGridFieldsDBTableView1sel: TcxGridDBColumn;
     MSScript1: TUniScript;
     SQLServerUniProvider1: TSQLServerUniProvider;
-    PostgreSQLUniProvider1: TPostgreSQLUniProvider;
     UniTransaction1: TUniTransaction;
     msFieldsrow: TIntegerField;
     msFieldsname: TWideStringField;
